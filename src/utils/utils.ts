@@ -12,6 +12,10 @@ export const parseWeight = (variantData: any): string => {
 }
 
 export const parseAmount = (price: number): number => {
+	const decimal = !!(price % 1)
+	if (decimal) {
+		return Math.round(price * 2) / 2
+	}
 	return Math.ceil(price)
 }
 
@@ -20,6 +24,7 @@ export const parsePrice = (
 	collection: string,
 	variantData?: any
 ): string => {
+	let price, decimal
 	switch (collection) {
 		case 'paket':
 			if (variantData.amount) {
@@ -35,10 +40,19 @@ export const parsePrice = (
 		default:
 			switch (variantData.weightUnit) {
 				case 'KILOGRAMS':
-					return `${parseAmount(amount / variantData.weight)} KR/KG`
+					/* if (variantData.weight <= 1) {
+						price = parseAmount(amount / (variantData.weight * 10))
+						decimal = !!(price % 1)
+						return `${price}${decimal ? '0' : ''} KR/HG`
+					} */
+					price = parseAmount(amount / variantData.weight)
+					decimal = !!(price % 1)
+					return `${price}${decimal ? '0' : ''} KR/KG`
 
 				case 'GRAMS':
-					return `${parseAmount(amount / (variantData.weight / 100))} KR/HG`
+					price = parseAmount(amount / (variantData.weight / 100))
+					decimal = !!(price % 1)
+					return `${price}${decimal ? '0' : ''} KR/HG`
 
 				default:
 					return `${parseAmount(amount)} KR/ST`
