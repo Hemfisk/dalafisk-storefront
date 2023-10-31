@@ -75,4 +75,30 @@
 			}
 		}
 	}
+	&.no_background {
+		background-image: none;
+		.delivery_container {
+			background-color: var(--accent-variant-light);
+			padding: var(--gap-horizontal);
+			flex-direction: row;
+			@media screen and (max-width: $breakpoint-tabletBig) {
+				flex-direction: column;
+			}
+		}
+		.delivery_content {
+			color: var(--text);
+			.delivery_search {
+				margin-top: 3em;
+				@media screen and (max-width: $breakpoint-tabletBig) {
+					margin-top: 0;
+				}
+			}
+			.delivery_status {
+				color: var(--text);
+			}
+			input {
+				border-color: unset;
+			}
+		}
+	}
 }

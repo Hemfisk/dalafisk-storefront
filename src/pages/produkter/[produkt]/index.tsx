@@ -7,6 +7,7 @@ import { CircularProgress } from '@mui/material'
 
 import { gqlShopify } from '@/pages/api/graphql'
 import {
+	GET_PAGE_CONTENT,
 	GET_PRODUCT,
 	GET_PRODUCT_BY_ID,
 	GET_SHOP_NAME,
@@ -33,8 +34,16 @@ import asc from '@/static/asc_logo.png'
 import krav from '@/static/krav_logo.png'
 import msc from '@/static/msc_logo.png'
 import sub from '@/static/sub_logo.png'
+import ZipCodeCheck from '@/components/ZipCodeCheck'
+import { readFileFromUrl } from '@/pages/api/files'
 
-const ProductPage = ({ shopInfo, product, relatedProducts }: any) => {
+const ProductPage = ({
+	shopInfo,
+	product,
+	relatedProducts,
+	zipCodes,
+	deliveryContent,
+}: any) => {
 	const [variantState, setVariantState] = useState(
 		product.variants.edges[0].node
 	)
@@ -79,7 +88,7 @@ const ProductPage = ({ shopInfo, product, relatedProducts }: any) => {
 		if (nutritionalContent) {
 			return (
 				<div className={`${layout.container} ${layout.no_top_margin}`}>
-					<details className={styles.details}>
+					<details className={`${layout.wrapped_container} ${styles.details}`}>
 						<summary>Näringsinnehåll / Övrig information</summary>
 						<div
 							className={styles.details_content}
@@ -256,6 +265,13 @@ const ProductPage = ({ shopInfo, product, relatedProducts }: any) => {
 			/>
 			<NutritionalContent />
 			<div className={`${layout.container} ${layout.no_top_margin}`}>
+				<ZipCodeCheck
+					zipCodes={zipCodes}
+					deliveryContent={deliveryContent}
+					noImage
+				/>
+			</div>
+			<div className={`${layout.container} ${layout.no_top_margin}`}>
 				{relatedProducts ? (
 					<>
 						<div className={layout.wrapped_container}>
@@ -299,10 +315,20 @@ export const getServerSideProps = async (context: any) => {
 
 	const shop = await gqlShopify(GET_SHOP_NAME, {})
 
+	const delivery = await gqlShopify(GET_PAGE_CONTENT, {
+		handle: 'kan-vi-leverera',
+	})
+
+	const dalafiskZipCodes = await readFileFromUrl(
+		`https://cdn.shopify.com/s/files/1/0751/0743/4787/files/dalafisk_postnr.csv?v=${Date.now()}`
+	)
+
 	const gqlData = {
 		shopInfo: shop.shop,
 		product: product.productByHandle,
 		relatedProducts,
+		deliveryContent: delivery.page,
+		zipCodes: { dalafiskZipCodes },
 	}
 
 	return {
