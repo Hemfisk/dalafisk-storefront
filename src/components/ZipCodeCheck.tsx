@@ -31,9 +31,10 @@ const ZipCodeCheck = ({ deliveryContent, zipCodes }: any) => {
 		return null
 	}
 
-	const { gordonZipCodes, dalafiskZipCodes } = zipCodes
+	const { dalafiskZipCodes } = zipCodes
+	// const { gordonZipCodes, dalafiskZipCodes } = zipCodes
 
-	const singleZipCodes = [
+	/* const singleZipCodes = [
 		...gordonZipCodes.split('\r\n'),
 		...dalafiskZipCodes.split('\r\n'),
 	].filter((zipCode) => !zipCode.includes('-'))
@@ -41,7 +42,14 @@ const ZipCodeCheck = ({ deliveryContent, zipCodes }: any) => {
 	const intervalZipCodes = [
 		...gordonZipCodes.split('\r\n'),
 		...dalafiskZipCodes.split('\r\n'),
-	].filter((zipCode) => zipCode.includes('-'))
+	].filter((zipCode) => zipCode.includes('-')) */
+	const singleZipCodes = [...dalafiskZipCodes.split('\r\n')].filter(
+		(zipCode) => !zipCode.includes('-')
+	)
+
+	const intervalZipCodes = [...dalafiskZipCodes.split('\r\n')].filter(
+		(zipCode) => zipCode.includes('-')
+	)
 
 	const validateZipCode = (zipCode: string) => {
 		if (zipCode.length === 5 && /^\d+$/.test(zipCode)) {
