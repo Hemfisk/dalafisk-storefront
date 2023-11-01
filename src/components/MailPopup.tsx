@@ -50,7 +50,12 @@ const MailPopup = ({ newsletter }: any) => {
 		axios
 			.post(
 				'https://Dalafisk.us9.list-manage.com/subscribe/post?u=ccd90fd17dce57c1ad1f1f663&id=ef7ad01277&f_id=004722e1f0',
-				{ MAIL: email, b_ccd90fd17dce57c1ad1f1f663_ef7ad01277: '' }
+				{ MAIL: email, b_ccd90fd17dce57c1ad1f1f663_ef7ad01277: '' },
+				{
+					headers: {
+						'Access-Control-Allow-Origin': '*',
+					},
+				}
 			)
 			.then((res) => {
 				if (res.status === 200) {
@@ -60,14 +65,14 @@ const MailPopup = ({ newsletter }: any) => {
 				} else {
 					setSubmitting(false)
 					notification('fail')
-					console.error('Message not sent')
+					console.error('Not submitted')
 					console.error(e)
 				}
 			})
 			.catch((e) => {
 				setSubmitting(false)
 				notification('fail')
-				console.error('Message not sent')
+				console.error('Not submitted')
 				console.error(e)
 			})
 	}
