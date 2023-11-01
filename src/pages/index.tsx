@@ -15,6 +15,7 @@ import { readFileFromUrl } from './api/files'
 const Home = ({
 	shopInfo,
 	deliveryContent,
+	bannerContent,
 	heroContent,
 	zipCodes,
 	collections,
@@ -31,6 +32,7 @@ const Home = ({
 				collections={collections}
 				allProducts={allProducts}
 				deliveryContent={deliveryContent}
+				bannerContent={bannerContent}
 				zipCodes={zipCodes}
 			/>
 		</>
@@ -42,6 +44,10 @@ export const getServerSideProps = async () => {
 
 	const delivery = await gqlShopify(GET_PAGE_CONTENT, {
 		handle: 'kan-vi-leverera',
+	})
+
+	const banner = await gqlShopify(GET_PAGE_CONTENT, {
+		handle: 'lojrom',
 	})
 
 	const hero = await gqlShopify(GET_PAGE_CONTENT, {
@@ -70,6 +76,7 @@ export const getServerSideProps = async () => {
 	const gqlData = {
 		shopInfo: shop.shop,
 		deliveryContent: delivery.page,
+		bannerContent: banner.page,
 		heroContent: hero.page,
 		zipCodes: { dalafiskZipCodes },
 		// zipCodes: { gordonZipCodes, dalafiskZipCodes },

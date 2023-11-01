@@ -19,7 +19,7 @@ const partOfInterval = (zipCode: string, intervalZipCodes: string[]): boolean =>
 		}
 	})
 
-const ZipCodeCheck = ({ deliveryContent, zipCodes }: any) => {
+const ZipCodeCheck = ({ deliveryContent, zipCodes, noImage = false }: any) => {
 	const [zipCodeResult, setZipCodeResult] = useState<{
 		warning: boolean
 		text: string
@@ -79,8 +79,48 @@ const ZipCodeCheck = ({ deliveryContent, zipCodes }: any) => {
 		}
 	}
 
+	if (!noImage) {
+		return (
+			<div className={styles.delivery_background}>
+				<div className={styles.delivery_container}>
+					<div className={styles.delivery_content}>
+						<h2>{deliveryContent.title}</h2>
+						<div
+							className={styles.content}
+							dangerouslySetInnerHTML={{ __html: deliveryContent.body }}
+						/>
+					</div>
+					<div className={styles.delivery_content}>
+						<div className={styles.delivery_search}>
+							<input
+								ref={zipCodeRef}
+								type='number'
+								placeholder='Fyll i ditt postnummer'
+							/>{' '}
+							<Button
+								primary
+								inverted
+								clickCallback={() =>
+									validateZipCode(zipCodeRef.current?.value as string)
+								}
+							>
+								Sök
+							</Button>
+						</div>
+						<div
+							className={`${styles.delivery_status} ${
+								zipCodeResult?.warning === false ? styles.result : ''
+							}`}
+						>
+							{zipCodeResult?.text}
+						</div>
+					</div>
+				</div>
+			</div>
+		)
+	}
 	return (
-		<div className={styles.delivery_background}>
+		<div className={`${styles.delivery_background} ${styles.no_background}`}>
 			<div className={styles.delivery_container}>
 				<div className={styles.delivery_content}>
 					<h2>{deliveryContent.title}</h2>
@@ -98,7 +138,7 @@ const ZipCodeCheck = ({ deliveryContent, zipCodes }: any) => {
 						/>{' '}
 						<Button
 							primary
-							inverted
+							inverted={!noImage}
 							clickCallback={() =>
 								validateZipCode(zipCodeRef.current?.value as string)
 							}

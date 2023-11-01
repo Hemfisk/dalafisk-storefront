@@ -1,0 +1,48 @@
+@import './utils.scss';
+
+.delivery_background {
+	@include maxWidthContainer;
+	background-image: url('/lojrom.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center left;
+	.delivery_container {
+		@include contentPadding;
+		display: flex;
+		gap: var(--gap-horizontal);
+		padding-right: min(40vw, calc(var(--max-width) * 0.4));
+		background-color: hsla(var(--primary-values), 20%);
+		padding-top: calc(var(--menu-height) * 2);
+		padding-bottom: calc(var(--menu-height) * 2);
+		flex-direction: column;
+		@media screen and (max-width: $breakpoint-tabletBig) {
+			padding-right: 30vw;
+		}
+		@media screen and (max-width: $breakpoint-tablet) {
+			padding-right: 25vw;
+		}
+		@media screen and (max-width: $breakpoint-mobileBig) {
+			padding-right: 15vw;
+			padding-left: 15vw;
+		}
+		@media screen and (max-width: $breakpoint-mobile) {
+			padding-right: 2.5em;
+			padding-left: 2.5em;
+		}
+		.delivery_content {
+			margin-left: auto;
+			width: 100%;
+			color: var(--background);
+			h2 {
+				font-size: clamp(1.4rem, 2vw, 1.8rem);
+				font-weight: 600;
+				text-transform: uppercase;
+				line-height: 1.14;
+				margin-bottom: 1em;
+			}
+			.content {
+				margin-bottom: 1em;
+			}
+		}
+	}
+}

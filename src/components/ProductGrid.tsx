@@ -8,11 +8,13 @@ import Button from './Button'
 import Search from './Search'
 import Product from './Product'
 import ZipCodeCheck from './ZipCodeCheck'
+import Banner from './Banner'
 
 interface Props {
 	collections: any
 	allProducts: any
 	deliveryContent?: any
+	bannerContent?: any
 	zipCodes?: any
 	initialCollection?: string | null
 }
@@ -21,6 +23,7 @@ const ProductGrid = ({
 	collections,
 	allProducts,
 	deliveryContent,
+	bannerContent,
 	zipCodes,
 	initialCollection = null,
 }: Props) => {
@@ -30,7 +33,7 @@ const ProductGrid = ({
 	)
 	const [showSelectModal, setShowSelectModal] = useState(false)
 	const [productSearch, setProductSearch] = useState<string>('')
-	const [productsBeforeZipCodeCheck, setProductsBeforeZipCodeCheck] = useState<
+	const [productsBeforeBanner, setProductsBeforeBanner] = useState<
 		number | null
 	>(null)
 
@@ -44,7 +47,7 @@ const ProductGrid = ({
 					: width < 380
 					? 1
 					: 4
-			setProductsBeforeZipCodeCheck(productsPerRow * 3)
+			setProductsBeforeBanner(productsPerRow * 3)
 		}
 	}, [width])
 
@@ -94,15 +97,15 @@ const ProductGrid = ({
 
 	const productsGrid = (productsToDisplay: any[]) => {
 		if (
-			productsBeforeZipCodeCheck &&
-			productsToDisplay.length > productsBeforeZipCodeCheck
+			productsBeforeBanner &&
+			productsToDisplay.length > productsBeforeBanner
 		) {
 			return (
 				<>
 					<div className={layout.container}>
 						<div className={layout.grid_container}>
 							{productsToDisplay
-								.slice(0, productsBeforeZipCodeCheck)
+								.slice(0, productsBeforeBanner)
 								.map((product: any) => (
 									<Product
 										key={product.node.handle}
@@ -115,7 +118,20 @@ const ProductGrid = ({
 					<div className={layout.container}>
 						<div className={layout.grid_container}>
 							{productsToDisplay
-								.slice(productsBeforeZipCodeCheck, productsToDisplay.length)
+								.slice(productsBeforeBanner, productsBeforeBanner * 2)
+								.map((product: any) => (
+									<Product
+										key={product.node.handle}
+										productData={product.node}
+									/>
+								))}
+						</div>
+					</div>
+					<Banner bannerContent={bannerContent} zipCodes={zipCodes} />
+					<div className={layout.container}>
+						<div className={layout.grid_container}>
+							{productsToDisplay
+								.slice(productsBeforeBanner * 2, productsToDisplay.length)
 								.map((product: any) => (
 									<Product
 										key={product.node.handle}
@@ -137,6 +153,8 @@ const ProductGrid = ({
 					</div>
 				</div>
 				<ZipCodeCheck deliveryContent={deliveryContent} zipCodes={zipCodes} />
+				<div className={layout.container} />
+				<Banner bannerContent={bannerContent} zipCodes={zipCodes} />
 			</>
 		)
 	}
