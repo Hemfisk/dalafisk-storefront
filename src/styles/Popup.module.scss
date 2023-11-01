@@ -1,0 +1,80 @@
+@import './utils.scss';
+
+.popup_wrapper {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.2);
+	z-index: 200;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.popup {
+	position: fixed;
+	z-index: 250;
+	background-color: white;
+	width: 80%;
+	max-width: 500px;
+	padding: var(--gap-horizontal);
+	display: flex;
+	flex-direction: column;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.header {
+	font-size: clamp(1.3rem, 2vw, 1.7rem);
+	font-weight: 600;
+	text-transform: uppercase;
+	line-height: 1.14;
+	color: var(--primary);
+	margin-bottom: 1em;
+}
+
+.content {
+	color: var(--text);
+	p {
+		margin-bottom: 1em;
+		font-size: 1rem;
+		font-weight: 400;
+	}
+	a {
+		color: inherit;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	ul,
+	ol {
+		list-style-position: inside;
+		margin-bottom: 1em;
+	}
+	&.no_margin {
+		padding-bottom: var(--gap-horizontal);
+	}
+	img {
+		max-width: 100%;
+	}
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-horizontal);
+	.input_container {
+		@include labeledInputStyles;
+	}
+	input {
+		display: flex;
+		flex-direction: column;
+		gap: var(--gap-horizontal);
+		@include inputStyles;
+	}
+	.button_container {
+		display: flex;
+		gap: var(--gap-horizontal);
+	}
+}

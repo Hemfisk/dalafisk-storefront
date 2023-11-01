@@ -7,10 +7,12 @@ import { CartProvider } from '@/context/state'
 
 import { gqlShopify } from './api/graphql'
 import { GET_PAGE_CONTENT, GET_PAYMENT_METHODS } from './api/queries'
+import MailPopup from '@/components/MailPopup'
 
 type InitialProps = {
 	paymentMethods: any
 	contactInfo: any
+	newsletter: any
 }
 
 const App = ({
@@ -18,10 +20,12 @@ const App = ({
 	pageProps,
 	paymentMethods,
 	contactInfo,
+	newsletter,
 }: AppProps & InitialProps) => {
 	return (
 		<CartProvider>
 			<Layout paymentMethods={paymentMethods} contactInfo={contactInfo}>
+				<MailPopup newsletter={newsletter} />
 				<Head>
 					<meta
 						name='viewport'
@@ -75,9 +79,14 @@ App.getInitialProps = async () => {
 		handle: 'kontaktinfo',
 	})
 
+	const newsletter = await gqlShopify(GET_PAGE_CONTENT, {
+		handle: 'nyhetsbrev',
+	})
+
 	return {
 		paymentMethods: paymentMethods.shop.paymentSettings,
 		contactInfo: contactInfo.page,
+		newsletter: newsletter.page,
 	}
 }
 
